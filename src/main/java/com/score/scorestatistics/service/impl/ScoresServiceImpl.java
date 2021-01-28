@@ -29,12 +29,6 @@ public class ScoresServiceImpl implements ScoresService {
         return this.scoreMapper.selectByExample(example);
     }
 
-    /*预更新查询*/
-    @Override
-    public Score preUpdateScore(Integer id) {
-        return this.scoreMapper.selectByPrimaryKey(id);
-    }
-
     /*更新用户*/
     @Override
     @Transactional

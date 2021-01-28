@@ -9,8 +9,6 @@ public interface ScoresService {
 
     List<Score> findScoreAll();
 
-    Score preUpdateScore(Integer id);
-
     void modifyScore(Score score);
 
     void dropScoreById(Integer id);
