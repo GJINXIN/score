@@ -12,4 +12,6 @@ public class ScoreStatisticsApplication {
         SpringApplication.run(ScoreStatisticsApplication.class, args);
     }
 
+    // 配置静态资源文件路径
+   
 }
