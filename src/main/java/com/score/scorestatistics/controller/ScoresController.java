@@ -1,17 +1,19 @@
 package com.score.scorestatistics.controller;
 
+import com.score.scorestatistics.dto.ResultDTO;
 import com.score.scorestatistics.pojo.Score;
 import com.score.scorestatistics.service.ScoresService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/score")
 public class ScoresController {
 
@@ -32,15 +34,18 @@ public class ScoresController {
 
     /*查询所有成绩*/
     @GetMapping("/findScoreAll")
-    public String findScoreAll(Model model) {
+    public ResultDTO findScoreAll(HttpServletRequest request) {
         try {
             List<Score> list = this.scoresService.findScoreAll();
-            model.addAttribute("allScorelist", list);
+//            我没数据库，本地Mock了两个数据
+//            List<Score> list = new ArrayList<>();
+//            list.add(new Score(1, "chinese", 7.77f, "A"));
+//            list.add(new Score(2, "englise", 57.77f, "B"));
+            return ResultDTO.success().add("scorns", list);
         } catch (Exception e) {
             e.printStackTrace();
-            return "error";
+            return ResultDTO.error(500, e.getMessage());
         }
-        return "score";
     }
 
     /*预更新成绩查询*/

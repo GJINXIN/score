@@ -1,8 +1,10 @@
 package com.score.scorestatistics.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Score {
     private Integer id;
 
