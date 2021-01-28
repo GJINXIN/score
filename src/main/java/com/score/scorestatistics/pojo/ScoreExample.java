@@ -1,6 +1,8 @@
 package com.score.scorestatistics.pojo;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class ScoreExample {
@@ -102,6 +104,32 @@ public class ScoreExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -361,6 +389,66 @@ public class ScoreExample {
 
         public Criteria andTypeNotBetween(String value1, String value2) {
             addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateIsNull() {
+            addCriterion("t_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateIsNotNull() {
+            addCriterion("t_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateEqualTo(Date value) {
+            addCriterionForJDBCDate("t_date =", value, "tDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateNotEqualTo(Date value) {
+            addCriterionForJDBCDate("t_date <>", value, "tDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateGreaterThan(Date value) {
+            addCriterionForJDBCDate("t_date >", value, "tDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("t_date >=", value, "tDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateLessThan(Date value) {
+            addCriterionForJDBCDate("t_date <", value, "tDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("t_date <=", value, "tDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateIn(List<Date> values) {
+            addCriterionForJDBCDate("t_date in", values, "tDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateNotIn(List<Date> values) {
+            addCriterionForJDBCDate("t_date not in", values, "tDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("t_date between", value1, value2, "tDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTDateNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("t_date not between", value1, value2, "tDate");
             return (Criteria) this;
         }
     }
