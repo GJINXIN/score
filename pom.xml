@@ -24,7 +24,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.1.4</version>
+            <version>2.1.2</version>
         </dependency>
 
         <dependency>
@@ -75,6 +75,17 @@
                 </configuration>
             </plugin>
         </plugins>
+        <!--配置资源拷贝插件-->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+
+
+        </resources>
     </build>
 
 </project>

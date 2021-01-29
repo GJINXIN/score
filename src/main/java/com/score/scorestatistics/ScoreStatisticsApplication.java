@@ -13,5 +13,5 @@ public class ScoreStatisticsApplication {
     }
 
     // 配置静态资源文件路径
-   
+
 }
