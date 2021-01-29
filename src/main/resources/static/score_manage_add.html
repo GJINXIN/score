@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+    <script src="../layui/layui.js"></script>
+</head>
+
+<body>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>成绩管理</legend>
+    </fieldset>
+
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">考试科目</label>
+            <div class="layui-input-inline">
+                <select name="subject">
+                    <option value="0">语文</option>
+                    <option value="1" selected="">数学</option>
+                    <option value="2">英语</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+            <label class="layui-form-label">种类</label>
+            <div class="layui-input-inline">
+                <select name="interest">
+                    <option value="0">月考</option>
+                    <option value="1">期中</option>
+                    <option value="2">期末</option>
+                    <option value="3">小测验</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">考试得分</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="0~100"
+                    class="layui-input">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">考试日期</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd"
+                        autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function () {
+            var form = layui.form
+                , layer = layui.layer
+                , layedit = layui.layedit
+                , laydate = layui.laydate;
+
+            //日期
+            laydate.render({
+                elem: '#date',
+                max: 0,
+            });
+
+            //各种基于事件的操作，下面会有进一步介绍
+        });
+    </script>
+</body>
+
+</html>

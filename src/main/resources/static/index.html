@@ -1,59 +1,66 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>开始使用layui</title>
     <link rel="stylesheet" href="../layui/css/layui.css">
 </head>
+
 <body>
-<div class="layui-container">
-    <div style=" height:10vh;background-image:url(./layui/images/sky.png); position:relative">
-        <fieldset class="layui-elem-field layui-field-title" style="position:absolute; bottom: 0">
-            <legend>成绩统计
-                <img src="./layui/images/face/0.gif" class="title_face"/>
-                <img src="./layui/images/face/0.gif" class="title_face"/>
-                <img src="./layui/images/face/0.gif" class="title_face"/>
-            </legend>
-        </fieldset>
-    </div>
-
-    <div class="layui-row" style="height:90vh;">
-        <div class="layui-col-md2">
-            <ul class="layui-nav layui-bg-green layui-nav-tree " style="height:90vh; width:auto; margin-right: 5%;">
-                <li class="layui-nav-item"><a href="">成绩显示</a></li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">成绩管理</a>
-                    <dl class="layui-nav-child">
-                        <dd>模块A</a></dd>
-                        <dd>模块B</a></dd>
-                        <dd>模块C</a></dd>
-                    </dl>
-                </li>
-            </ul>
+    <div class="layui-container">
+        <div style="height:10vh; background-image:url(../layui/images/sky.png); position:relative">
+            <fieldset class="layui-elem-field layui-field-title" style="position:absolute; bottom: 0">
+                <legend>成绩统计
+                    <img src="../layui/images/face/0.gif" class="title_face" />
+                    <img src="../layui/images/face/0.gif" class="title_face" />
+                    <img src="../layui/images/face/0.gif" class="title_face" />
+                </legend>
+            </fieldset>
         </div>
 
-        <div class="layui-col-md10">
-            <iframe src="./score_display.html" width="100%" height="100%" frameborder=false scrolling=false></iframe>
+        <div class="layui-row">
+            <div class="layui-col-md2">
+                <ul class="layui-nav layui-nav-tree " style="height:90vh; width:auto; margin-right: 5%;">
+                    <li class="layui-nav-item" class="nav-link">
+                        <a href="./score_display.html" target="menuFrame">成绩显示</a>
+                    </li>
+                    <li class="layui-nav-item" class="nav-link">
+                        <a href="#">成绩管理</a>
+                        <dl class="layui-nav-child">
+                            <!-- 二级菜单 -->
+                            <dd><a href="./score_manage_add.html" target="menuFrame">新增</a></dd>
+                            <dd><a href="#">修改</a></dd>
+                            <dd><a href="#">删除</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="layui-col-md10" style="height:90vh;">
+                <iframe src="./score_display.html" name="menuFrame" width="100%" height="100%" frameborder=false
+                    scrolling=false></iframe>
+            </div>
         </div>
     </div>
-</div>
-<!-- 你的HTML代码 -->
-<script src="../layui/layui.all.js"></script>
-<script>
-    !function () {
-        var $ = layui.$
-        var layer = layui.layer, form = layui.form;
-        //title表情随机
-        var str = $(".title_face")[0].src
-        for (let index = 0; index < $(".title_face").length; index++) {
-            $(".title_face")[index].src = str.split(/[0-9]+\.gif/)[0] + Math.round(Math.random() * 100 % 70) + ".gif"
-        }
-        //js test
-        layer.msg("js代码正常");
-    }();
 
-</script>
+    <script src="../layui/layui.all.js"></script>
+    <script>
+        !function () {
+            var $ = layui.$
+            var layer = layui.layer, form = layui.form;
+            //title表情随机
+            var str = $(".title_face")[0].src
+            for (let index = 0; index < $(".title_face").length; index++) {
+                $(".title_face")[index].src = str.split(/[0-9]+\.gif/)[0] + Math.round(Math.random() * 100 % 70) + ".gif"
+            }
+            //js test
+            layer.msg("js代码正常");
+        }();
+
+
+    </script>
 </body>
 
 </html>
