@@ -1,12 +1,12 @@
 package com.score.scorestatistics.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.score.scorestatistics.dto.ResultDTO;
 import com.score.scorestatistics.pojo.Score;
 import com.score.scorestatistics.service.ScoresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -25,7 +25,8 @@ public class ScoresController {
 
     /*查询所有成绩*/
     @GetMapping("/findScoreAll")
-    public ResultDTO findScoreAll(HttpServletRequest request) {
+    public ResultDTO findScoreAll(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<Score> list = this.scoresService.findScoreAll();
         return ResultDTO.success().add("scorns", list);
     }
