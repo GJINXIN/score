@@ -7,6 +7,7 @@ import com.score.scorestatistics.service.ScoresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,9 @@ public class ScoresController {
     public ResultDTO findScoreAll(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Score> list = this.scoresService.findScoreAll();
-        return ResultDTO.success().add("scorns", list);
+        ResultDTO resultDTO = new ResultDTO(0, "OK", new LinkedHashMap<>());
+        resultDTO.add("scorns", list);
+        return resultDTO;
     }
 
     /*更新成绩*/
@@ -39,7 +42,7 @@ public class ScoresController {
     }
 
     /*删除成绩*/
-    @GetMapping("/deleteScore")
+    @DeleteMapping("/deleteScore")
     public ResultDTO deleteScore(@RequestBody Integer id) {
         this.scoresService.dropScoreById(id);
         return ResultDTO.success();

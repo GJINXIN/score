@@ -11,6 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 public class GloballException {
     @ExceptionHandler(value = {Exception.class})
     Object handleException(Exception e, HttpServletRequest request) {
-        return ResultDTO.error(500, e.getMessage());
+        return ResultDTO.error(500, e.toString());
     }
 }
