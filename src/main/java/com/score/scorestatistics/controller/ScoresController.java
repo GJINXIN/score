@@ -1,6 +1,7 @@
 package com.score.scorestatistics.controller;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.score.scorestatistics.dto.ResultDTO;
 import com.score.scorestatistics.pojo.Score;
 import com.score.scorestatistics.service.ScoresService;
@@ -29,8 +30,9 @@ public class ScoresController {
     public ResultDTO findScoreAll(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Score> list = this.scoresService.findScoreAll();
+        PageInfo page = new PageInfo(list);
         ResultDTO resultDTO = new ResultDTO(0, "OK", new LinkedHashMap<>());
-        resultDTO.add("scorns", list);
+        resultDTO.add("scorns", page);
         return resultDTO;
     }
 
