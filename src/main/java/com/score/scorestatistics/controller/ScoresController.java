@@ -45,7 +45,7 @@ public class ScoresController {
 
     /*删除成绩*/
     @DeleteMapping("/deleteScore")
-    public ResultDTO deleteScore(@RequestBody Integer id) {
+    public ResultDTO deleteScore(@RequestParam("id") Integer id) {
         this.scoresService.dropScoreById(id);
         return ResultDTO.success();
     }
