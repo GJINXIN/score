@@ -29,7 +29,7 @@ public class ScoresServiceImpl implements ScoresService {
         return this.scoreMapper.selectByExample(example);
     }
 
-    /*更新用户*/
+    /*更新成绩*/
     @Override
     @Transactional
     public void modifyScore(Score score) {
@@ -41,5 +41,11 @@ public class ScoresServiceImpl implements ScoresService {
     @Transactional
     public void dropScoreById(Integer id) {
         this.scoreMapper.deleteByPrimaryKey(id);
+    }
+
+    /*根据id获取单个成绩*/
+    @Override
+    public Score getScore(Integer id) {
+        return this.scoreMapper.selectByPrimaryKey(id);
     }
 }

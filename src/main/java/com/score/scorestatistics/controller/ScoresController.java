@@ -36,6 +36,15 @@ public class ScoresController {
         return resultDTO;
     }
 
+    /*根据id获取成绩信息*/
+    @GetMapping("/getScore")
+    public ResultDTO getScore(@RequestParam("id") Integer id) {
+        Score score = this.scoresService.getScore(id);
+        ResultDTO resultDTO = new ResultDTO(0, "OK", new LinkedHashMap<>());
+        resultDTO.add("scorns", score);
+        return resultDTO;
+    }
+
     /*更新成绩*/
     @PostMapping("/updateScore")
     public ResultDTO updateScore(@RequestBody Score score) {

@@ -13,4 +13,6 @@ public interface ScoresService {
 
     void dropScoreById(Integer id);
 
+    Score getScore(Integer id);
+
 }

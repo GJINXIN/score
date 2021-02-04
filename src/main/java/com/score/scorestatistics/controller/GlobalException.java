@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
-public class GloballException {
+public class GlobalException {
     @ExceptionHandler(value = {Exception.class})
     Object handleException(Exception e, HttpServletRequest request) {
         return ResultDTO.error(500, e.toString());
