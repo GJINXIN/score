@@ -9,12 +9,16 @@
     <script src="../layui/axios.min.js"></script>
 </head>
 
-<body>
-    <fieldset class="layui-elem-field layui-field-title">
-        <legend>成绩添加</legend>
-    </fieldset>
+<body style="margin-right: 100px;">
 
     <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">成绩ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" id="score_id" class="layui-input" style="width:15vh; border: none;"
+                disabled>
+            </div>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label">考试科目</label>
             <div class="layui-input-inline">
@@ -30,6 +34,7 @@
                     <option value="生物">生物</option>
                 </select>
             </div>
+
             <label class="layui-form-label">种类</label>
             <div class="layui-input-inline">
                 <select name="type">
@@ -55,9 +60,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-
         </div>
-
 
         <div class="layui-form-item">
             <div class="layui-input-block">
@@ -72,13 +75,14 @@
             var form = layui.form
                 , layer = layui.layer
                 , layedit = layui.layedit
-                , laydate = layui.laydate;
-
+                , laydate = layui.laydate
+                , $ = layui.$;
 
             //日期
             laydate.render({
                 elem: '#date',
                 max: 0, // 最大值今天
+                trigger: 'click',
             });
 
             //分数过滤
@@ -90,21 +94,34 @@
                 }
             });
 
-
             form.on('submit(score_add)', function (data) {
                 console.log(data.field)
                 axios({
                     method: 'post',
-                    url: 'http://localhost:8080/score/addScore',
+                    url: 'http://localhost:8080/score/updateScore',
                     data: data.field
                 }).then(function (response) {
-                    layer.msg("成绩新增成功" + response);
+                    layer.msg("成绩修改成功" + response);
                 }).catch(function (error) {
-                    layer.alert("成绩新增失败" + error);
+                    layer.alert("成绩修改失败" + error);
                 });
             });
+            $('#score_id').val('77')
+
+            function get_request(id) {
+
+                console.log('delete score id:' + id)
+                axios({
+                    method: '',
+                    url: 'http://localhost:8080/score/deleteScore?id=' + id,
 
 
+                }).then(function (response) {
+                    layer.msg("");
+                }).catch(function (error) {
+                    layer.alert("\n" + error);
+                })
+            };
         });
     </script>
 </body>

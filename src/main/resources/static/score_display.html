@@ -10,118 +10,64 @@
     <script src="../layui/axios.min.js"></script>
 </head>
 
-<body style="">
-<fieldset class="layui-elem-field layui-field-title">
-    <legend>各科成绩图表</legend>
-</fieldset>
-<div id="line" style="height:500px; width: 95%;"></div>
+<body>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>各科成绩图表</legend>
+    </fieldset>
+    <div id="line" style="height:500px; width: 95%;"></div>
 
-<br>
-<fieldset class="layui-elem-field layui-field-title">
-    <legend>成绩表</legend>
-</fieldset>
-<table class="layui-hide" id="score_table" , lay-filter="scores"></table>
+    <br>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>成绩表</legend>
+    </fieldset>
+    <table class="layui-hide" id="score_table" , lay-filter="scores"></table>
 
-<script type="text/html" id="barDemo">
-    <!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a> -->
+    <script type="text/html" id="barDemo">
+        <!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a> -->
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
+    </script>
 
 </body>
 
 <script type='text/javascript'>
-    //折线图
-    optionLine = {
-        title: {
-            text: ''
-        },
-        toolbox: {
-            show: true,
-            feature: {
 
-                magicType: {type: ['line', 'bar']},
-                markPoint: {},
-                restore: {},
-            }
-        },
-        legend: {
-            data: ['语文', '数学'],
-            align: 'left',
-            top: '4'
-        },
-        xAxis: {
-            type: 'category',
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        yAxis: {
-            name: '分数(100)',
-            type: 'value',
-        },
-        series: [{
-            name: '语文',
-            data: [22, 25, 35, 28, 20, 45, 52],
-            type: 'line'
-        }, {
-            name: '数学',
-            data: [12, 21, 29, 35, 24, 56, 48],
-            type: 'line'
-        }],
-        tooltip: {
-            trigger: 'axis'
-        },
-        grid: {
-            show: false,
-            borderColor: '#ebebeb',
-            x: 33,
-            x2: 0,
-            y: 40,
-            y2: 0,
-            height: 400
-        },
-    };
-    var domLine = document.getElementById("line");
-    var chartLine = echarts.init(domLine, 'theme-ax');
-    chartLine.setOption(optionLine, true);
-
-
+    var chart_data;
     layui.use('table', function () {
         var table = layui.table;
         var $ = layui.$;
         table.render({
             elem: '#score_table'
             , url: "http://localhost:8080/score/findScoreAll"
-            // , where: { "type": "语文" }
             , request: {
                 pageName: 'pageNum' //页码的参数名称，默认：page
                 , limitName: 'pageSize' //每页数据量的参数名，默认：limit
             }
             , parseData: function (res) { //res 即为原始返回的数据
+
+                chart_display(res.body.scorns.list)
                 return {
                     "code": res.status, //解析接口状态
                     "msg": res.msg, //解析提示文本
-                    "count": 2, //解析数据长度
-                    "data": res.body.scorns //解析数据列表
+                    "count": res.body.scorns.total, //解析数据长度
+                    "data": res.body.scorns.list //解析数据列表
                 };
             }
             , cols: [[
-                {field: 'id', width: 100, title: 'ID'}
-                , {field: 'subject', title: '学科', sort: true}
-                , {field: 'score', title: '成绩', sort: true}
-                , {field: 'type', title: '分类', sort: true}
-                , {field: 'tDate', minWidth: 300, title: '考试时间', sort: true}
-                , {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'}
+                { field: 'id', width: 100, title: 'ID' }
+                , { field: 'subject', title: '学科', sort: true }
+                , { field: 'score', title: '成绩', sort: true }
+                , { field: 'type', title: '分类', sort: true }
+                , { field: 'tDate', minWidth: 300, title: '考试时间', sort: true }
+                , { fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo' }
             ]]
-            // , data: [{ id: "A", subject: "1", score: "1", type: "1", time: new Date().toLocaleDateString() }
-            //     , { id: "B", subject: "1", score: "2", type: "1", time: new Date().toLocaleDateString() }
-            //     , { id: "1", subject: "1", score: "2", type: "1", time: new Date().toLocaleDateString() }
-            //     , { id: "1", subject: "1", score: "1", type: "1", time: new Date().toLocaleDateString() }]
             , done: function (res, curr, count) {
-                //如果是异步请求数据方式，res即为你接口返回的信息。
-                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-                console.log(res);
+                // console.log(res);
             }
         });
+
+
+
         //监听工具条
         table.on('tool(scores)', function (obj) {
             var data = obj.data;
@@ -132,25 +78,132 @@
                     layer.close(index);
                 });
             } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
+                update_request(data.id);
             }
         });
 
         function delete_request(id) {
+            console.log('delete score id:' + id)
             axios({
                 method: 'delete',
-                url: '/score/deleteScore',
-                data: {
-                    id: id,
-                }
+                url: 'http://localhost:8080/score/deleteScore?id=' + id,
+
+
             }).then(function (response) {
                 layer.msg("删除成功");
             }).catch(function (error) {
                 layer.alert("删除失败\n" + error);
             })
         };
+
+        function update_request(id) {
+            layer.open({
+                type: 2,
+                title: '成绩更新',
+                shadeClose: true,
+                shade: 0.3,
+                area: ['450px', '450px'],
+                content: './score_manage_update.html',
+                zIndex: layer.zIndex, //重点1
+                success: function (layero) {
+                    layer.setTop(layero); //重点2
+                }
+            });
+        }
     });
 
+    function chart_display(chart_data) {
+        // console.log(chart_data);
+        // 数组去重函数
+        Array.prototype.distinct = function () {
+            var arr = this,
+                result = [],
+                len = arr.length;
+            arr.forEach(function (v, i, arr) {  //这里利用map，filter方法也可以实现
+                var bool = arr.indexOf(v, i + 1);  //从传入参数的下一个索引值开始寻找是否存在重复
+                if (bool === -1) {
+                    result.push(v);
+                }
+            })
+            return result;
+        };
+        var subject_category = ['语文', '数学', '英语', '思想品德', '地理', '历史', '物理', '化学', '生物']
+        var x_category = chart_data.map((currentValue) => {
+            return currentValue.tDate
+        }).distinct().sort();
+
+        var series_data = subject_category
+            .map((subject) => {                                                             // 按学科分类
+                return chart_data.filter((thisData) => {
+                    return subject == thisData.subject
+                })
+            })
+            .map((subjected_array, index) => {
+                var current_subject = subject_category[index]                               // 按当前查询日期段重组数据
+                var score_list = x_category.reduce((cur_list, thisDate) => {
+                    var DATEITEM = subjected_array.find((cur_data) => {
+                        return cur_data.tDate == thisDate
+                    })
+                    cur_list.push(DATEITEM ? DATEITEM.score : null);
+                    return cur_list
+                }, [])
+                return {
+                    name: current_subject,
+                    data: score_list,
+                    type: 'line'
+                }
+            })
+        console.log(series_data)
+
+
+
+        //折线图
+        optionLine = {
+            title: {
+                text: ''
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    magicType: { type: ['line', 'bar'] },
+                    markPoint: {},
+                    restore: {},
+                }
+            },
+            legend: {
+                data: subject_category,
+                align: 'left',
+                top: '4'
+            },
+            xAxis: {
+                type: 'category',
+                data: x_category
+            },
+            yAxis: {
+                name: '分数(100)',
+                type: 'value',
+            },
+            series: series_data
+            ,
+            tooltip: {
+                trigger: 'axis'
+            },
+            grid: {
+                show: false,
+                borderColor: '#ebebeb',
+                x: 33,
+                x2: 0,
+                y: 40,
+                y2: 0,
+                height: 400
+            },
+        };
+
+
+        var domLine = document.getElementById("line");
+        var chartLine = echarts.init(domLine, 'theme-ax');
+        chartLine.setOption(optionLine, true);
+    }
 </script>
 
 
