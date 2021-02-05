@@ -95,7 +95,7 @@
                 console.log(data.field)
                 axios({
                     method: 'post',
-                    url: 'http://localhost:8080/score/addScore',
+                    url: '/score/addScore',
                     data: data.field
                 }).then(function (response) {
                     layer.msg("成绩新增成功" + response);

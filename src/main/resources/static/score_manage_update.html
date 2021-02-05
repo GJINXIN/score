@@ -11,12 +11,12 @@
 
 <body style="margin-right: 100px;">
 
-    <form class="layui-form" action="">
+    <form class="layui-form" action="#" lay-filter="score_from">
         <div class="layui-form-item">
             <label class="layui-form-label">成绩ID</label>
             <div class="layui-input-block">
                 <input type="text" name="id" id="score_id" class="layui-input" style="width:15vh; border: none;"
-                disabled>
+                    disabled>
             </div>
         </div>
         <div class="layui-form-item">
@@ -60,12 +60,8 @@
             </div>
         </div>
         <div class="layui-form-item">
-        </div>
-
-        <div class="layui-form-item">
             <div class="layui-input-block">
                 <button type="submit" class="layui-btn" lay-submit lay-filter="score_add">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
     </form>
@@ -98,28 +94,37 @@
                 console.log(data.field)
                 axios({
                     method: 'post',
-                    url: 'http://localhost:8080/score/updateScore',
+                    url: '/score/updateScore',
                     data: data.field
                 }).then(function (response) {
                     layer.msg("成绩修改成功" + response);
                 }).catch(function (error) {
                     layer.alert("成绩修改失败" + error);
                 });
+                return false;
             });
-            $('#score_id').val('77')
+
+
+            var str = window.location.href
+            var param_id = str.split('=')[1]
+            $('#score_id').val(param_id)
+
+            get_request(param_id)
 
             function get_request(id) {
-
-                console.log('delete score id:' + id)
                 axios({
-                    method: '',
-                    url: 'http://localhost:8080/score/deleteScore?id=' + id,
-
-
+                    method: 'get',
+                    url: '/score/getScore?id=' + id,
                 }).then(function (response) {
-                    layer.msg("");
+                    var data = response.data.body.scorns
+                    form.val("score_from", { 
+                        "subject": data.subject // "name": "value"
+                        , "type": data.type
+                        , "score": data.score
+                        , "tDate": data.tDate
+                    });
                 }).catch(function (error) {
-                    layer.alert("\n" + error);
+                    layer.alert("\n" + error)
                 })
             };
         });

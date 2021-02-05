@@ -38,7 +38,7 @@
         var $ = layui.$;
         table.render({
             elem: '#score_table'
-            , url: "http://localhost:8080/score/findScoreAll"
+            , url: "/score/findScoreAll"
             , request: {
                 pageName: 'pageNum' //页码的参数名称，默认：page
                 , limitName: 'pageSize' //每页数据量的参数名，默认：limit
@@ -61,6 +61,7 @@
                 , { field: 'tDate', minWidth: 300, title: '考试时间', sort: true }
                 , { fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo' }
             ]]
+            , page: true
             , done: function (res, curr, count) {
                 // console.log(res);
             }
@@ -86,7 +87,7 @@
             console.log('delete score id:' + id)
             axios({
                 method: 'delete',
-                url: 'http://localhost:8080/score/deleteScore?id=' + id,
+                url: '/score/deleteScore?id=' + id,
 
 
             }).then(function (response) {
@@ -103,11 +104,7 @@
                 shadeClose: true,
                 shade: 0.3,
                 area: ['450px', '450px'],
-                content: './score_manage_update.html',
-                zIndex: layer.zIndex, //重点1
-                success: function (layero) {
-                    layer.setTop(layero); //重点2
-                }
+                content: './score_manage_update.html?id=' + id,
             });
         }
     });
@@ -154,8 +151,6 @@
                 }
             })
         console.log(series_data)
-
-
 
         //折线图
         optionLine = {
